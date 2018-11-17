@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RestWithASPNetCoreUdemy.Model.Context;
 using RestWithASPNetCoreUdemy.Services.Implementation;
 
 namespace RestWithASPNetCoreUdemy
@@ -26,6 +28,9 @@ namespace RestWithASPNetCoreUdemy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = Configuration["MySqlConnection:MySqlConnectionString"];
+            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //dependency injection

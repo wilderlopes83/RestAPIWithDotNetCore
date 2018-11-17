@@ -2,16 +2,36 @@
 using System.Collections.Generic;
 using System.Threading;
 using RestWithASPNetCoreUdemy.Model;
+using RestWithASPNetCoreUdemy.Model.Context;
 
 namespace RestWithASPNetCoreUdemy.Services.Implementation
 {
     public class PersonServiceImpl : IPersonService
     {
+        private MySQLContext _context;
+
+        public PersonServiceImpl(MySQLContext context)
+        {
+            _context = context;
+        }
+
+
         private volatile int count;
 
         public Person Create(Person person)
         {
+            try
+            {
+                _context.Add(person);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
             return person;
+
         }
 
         public void Delete(long id)

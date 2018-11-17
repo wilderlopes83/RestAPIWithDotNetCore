@@ -50,7 +50,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult Put([FromBody] Person person)
         {
             
