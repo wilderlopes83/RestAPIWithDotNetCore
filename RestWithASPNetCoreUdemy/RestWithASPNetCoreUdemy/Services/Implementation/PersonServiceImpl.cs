@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Model.Context;
+using System.Linq;
 
 namespace RestWithASPNetCoreUdemy.Services.Implementation
 {
@@ -14,9 +15,6 @@ namespace RestWithASPNetCoreUdemy.Services.Implementation
         {
             _context = context;
         }
-
-
-        private volatile int count;
 
         public Person Create(Person person)
         {
@@ -36,30 +34,56 @@ namespace RestWithASPNetCoreUdemy.Services.Implementation
 
         public void Delete(long id)
         {
-            //
+            var result = _context.Persons.SingleOrDefault(p=> p.Id.Equals(id));
+            //var result = _context<Person>.SingleOrDefault(p=> p.Id.Equals(id));
+
+            try
+            {
+                if (result != null)
+                { 
+                    _context.Persons.Remove(result);
+                    _context.SaveChanges();
+                }               
+                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
         public List<Person> FindAll()
         {
-            List<Person> p = new List<Person>();
-            for (int i=0; i <8; i++)
-            {
-                p.Add(MockPerson(i));
-            }
-
-            return p;
+            return _context.Persons.ToList(); 
         }
 
         public Person FindById(long id)
         {
-            return MockPerson((int)id);
+            //return MockPerson((int)id);
+            return _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
         }
 
         public Person Update(Person person)
         {
+            if (!Exist(person.Id)) return new Person();
+
+            var result = _context.Persons.SingleOrDefault(p=> p.Id.Equals(person.Id));
+
+            try
+            {
+                _context.Entry(result).CurrentValues.SetValues(person);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
             return person;
         }
 
+        /* 
         private Person MockPerson(int i)
         {
             return new Person
@@ -75,6 +99,12 @@ namespace RestWithASPNetCoreUdemy.Services.Implementation
         private long IncrementAndGet()
         {            
             return Interlocked.Increment(ref count);
+        }
+        */
+
+        private bool Exist(long? id)
+        {
+            return _context.Persons.Any(p => p.Id.Equals(id));
         }
     }
 }
