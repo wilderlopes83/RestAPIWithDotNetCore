@@ -33,6 +33,10 @@ namespace RestWithASPNetCoreUdemy
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            //para habilitar o versionamento, foi necessário adicionar via nuget:
+            //dotnet add package Microsoft.AspNetCore.Mvc.Versioning
+            services.AddApiVersioning();
+
             //dependency injection
             services.AddScoped<IPersonService, PersonServiceImpl>();
         }

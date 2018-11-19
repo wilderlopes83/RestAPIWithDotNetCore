@@ -3,9 +3,10 @@ using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Services.Implementation;
 
 namespace RestWithASPNetCoreUdemy.Controllers
-{
-    [Route("api/[controller]")]
+{    
     [ApiController]
+    [ApiVersion("1")]
+    [Route("api/[controller]/v{version.apiVersion}")]
     public class PersonController : Controller
     {
         private IPersonService _personService;

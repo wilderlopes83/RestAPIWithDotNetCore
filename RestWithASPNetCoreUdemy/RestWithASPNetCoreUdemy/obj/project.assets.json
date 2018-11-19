@@ -1065,6 +1065,18 @@
           "lib/netstandard2.0/Microsoft.AspNetCore.Mvc.TagHelpers.dll": {}
         }
       },
+      "Microsoft.AspNetCore.Mvc.Versioning/2.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc.Core": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Mvc.Versioning.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Mvc.Versioning.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Mvc.ViewFeatures/2.1.1": {
         "type": "package",
         "dependencies": {
@@ -5500,6 +5512,18 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Mvc.TagHelpers.xml",
         "microsoft.aspnetcore.mvc.taghelpers.2.1.1.nupkg.sha512",
         "microsoft.aspnetcore.mvc.taghelpers.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Mvc.Versioning/2.3.0": {
+      "sha512": "imFDMw7KxV4hmhTiB5/39pYMPhoSLXSvwRL4vu/TVvqsoQFA/sEzNp+uB6oR4CYvZdrAvng2UJVcPJnoBx9YYA==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.mvc.versioning/2.3.0",
+      "files": [
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Mvc.Versioning.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.Mvc.Versioning.xml",
+        "microsoft.aspnetcore.mvc.versioning.2.3.0.nupkg.sha512",
+        "microsoft.aspnetcore.mvc.versioning.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Mvc.ViewFeatures/2.1.1": {
@@ -12556,6 +12580,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Microsoft.AspNetCore.App >= 2.1.1",
+      "Microsoft.AspNetCore.Mvc.Versioning >= 2.3.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.NETCore.App >= 2.1.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.1.1",
@@ -12569,11 +12594,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Estudo\\RestAPI_Udemy\\RestAPIWithDotNetCore\\RestWithAspNetCoreUdemy\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy.csproj",
+      "projectUniqueName": "c:\\Estudo\\RestAPI_Udemy\\RestAPIWithDotNetCore\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy.csproj",
       "projectName": "RestWithASPNetCoreUdemy",
-      "projectPath": "C:\\Estudo\\RestAPI_Udemy\\RestAPIWithDotNetCore\\RestWithAspNetCoreUdemy\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy.csproj",
+      "projectPath": "c:\\Estudo\\RestAPI_Udemy\\RestAPIWithDotNetCore\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy.csproj",
       "packagesPath": "C:\\Users\\wslopes\\.nuget\\packages\\",
-      "outputPath": "C:\\Estudo\\RestAPI_Udemy\\RestAPIWithDotNetCore\\RestWithAspNetCoreUdemy\\RestWithASPNetCoreUdemy\\obj\\",
+      "outputPath": "c:\\Estudo\\RestAPI_Udemy\\RestAPIWithDotNetCore\\RestWithASPNetCoreUdemy\\RestWithASPNetCoreUdemy\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12608,6 +12633,10 @@
             "target": "Package",
             "version": "[2.1.1, )",
             "autoReferenced": true
+          },
+          "Microsoft.AspNetCore.Mvc.Versioning": {
+            "target": "Package",
+            "version": "[2.3.0, )"
           },
           "Microsoft.AspNetCore.Razor.Design": {
             "suppressParent": "All",
