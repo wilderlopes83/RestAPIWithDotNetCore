@@ -12,7 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestWithASPNetCoreUdemy.Model.Context;
-using RestWithASPNetCoreUdemy.Services.Implementation;
+using RestWithASPNetCoreUdemy.Business;
+using RestWithASPNetCoreUdemy.Repository;
 
 namespace RestWithASPNetCoreUdemy
 {
@@ -35,10 +36,11 @@ namespace RestWithASPNetCoreUdemy
 
             //para habilitar o versionamento, foi necessário adicionar via nuget:
             //dotnet add package Microsoft.AspNetCore.Mvc.Versioning
-            services.AddApiVersioning();
+            //services.AddApiVersioning();
 
             //dependency injection
-            services.AddScoped<IPersonService, PersonServiceImpl>();
+            services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
+            services.AddScoped<IPersonRepository, PersonRepositoryImpl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,13 +5,13 @@ using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Model.Context;
 using System.Linq;
 
-namespace RestWithASPNetCoreUdemy.Services.Implementation
+namespace RestWithASPNetCoreUdemy.Repository
 {
-    public class PersonServiceImpl : IPersonService
+    public class PersonRepositoryImpl : IPersonRepository
     {
         private MySQLContext _context;
 
-        public PersonServiceImpl(MySQLContext context)
+        public PersonRepositoryImpl(MySQLContext context)
         {
             _context = context;
         }
@@ -35,7 +35,6 @@ namespace RestWithASPNetCoreUdemy.Services.Implementation
         public void Delete(long id)
         {
             var result = _context.Persons.SingleOrDefault(p=> p.Id.Equals(id));
-            //var result = _context<Person>.SingleOrDefault(p=> p.Id.Equals(id));
 
             try
             {
@@ -82,27 +81,7 @@ namespace RestWithASPNetCoreUdemy.Services.Implementation
 
             return person;
         }
-
-        /* 
-        private Person MockPerson(int i)
-        {
-            return new Person
-            {
-                Id = IncrementAndGet(),
-                FirstName = "Person First Name " + i.ToString(),
-                LastName = "Person Last Name " + i.ToString(),
-                Address = "Some Address" + i.ToString(),
-                Gender = "Male"
-            };
-        }
-
-        private long IncrementAndGet()
-        {            
-            return Interlocked.Increment(ref count);
-        }
-        */
-
-        private bool Exist(long? id)
+        public bool Exist(long? id)
         {
             return _context.Persons.Any(p => p.Id.Equals(id));
         }
