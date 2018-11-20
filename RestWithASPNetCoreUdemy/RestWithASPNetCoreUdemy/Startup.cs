@@ -36,7 +36,7 @@ namespace RestWithASPNetCoreUdemy
 
             //para habilitar o versionamento, foi necessário adicionar via nuget:
             //dotnet add package Microsoft.AspNetCore.Mvc.Versioning
-            //services.AddApiVersioning();
+            services.AddApiVersioning();
 
             //dependency injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();

@@ -3,11 +3,10 @@ using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Business;
 
 namespace RestWithASPNetCoreUdemy.Controllers
-{    
-    [ApiController]
-    //[ApiVersion("1")]
-    //[Route("api/[controller]/v{version.apiVersion}")]
-    [Route("api/[controller]")]
+{   
+    
+    [ApiVersion("1")]
+    [Route( "api/v{version:apiVersion}/[controller]" )]
     public class PersonController : Controller
     {
         private IPersonBusiness _personBusiness;
