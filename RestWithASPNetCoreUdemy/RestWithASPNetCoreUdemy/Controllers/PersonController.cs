@@ -60,7 +60,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
                 return BadRequest();
             }
 
-            var updatedPerson =  _repository.Update(person);
+            var updatedPerson =  _personBusiness.Update(person);
 
             if (updatedPerson == null)
             {
