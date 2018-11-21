@@ -59,10 +59,15 @@ namespace RestWithASPNetCoreUdemy.Controllers
             {
                 return BadRequest();
             }
-            else
+
+            var updatedPerson =  _repository.Update(person);
+
+            if (updatedPerson == null)
             {
-                return new ObjectResult(_personBusiness.Update(person));
+                return NoContent();
             }
+
+            return new ObjectResult(updatedPerson);
         }
 
         [HttpDelete("{id}")]
