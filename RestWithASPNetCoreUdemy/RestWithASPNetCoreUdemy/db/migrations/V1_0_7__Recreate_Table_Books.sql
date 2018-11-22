@@ -1,9 +1,8 @@
 CREATE TABLE IF NOT EXISTS `Books`(
-    `id` varchar(127) NOT NULL,
+    `id` int(10) AUTO_INCREMENT PRIMARY KEY,
     `Author` longtext,
     `LaunchDate` datetime(6) NOT NULL,
     `Price` decimal(65,2) NOT NULL,
-    `Title` longtext,
-  PRIMARY KEY(`id`)  
+    `Title` longtext 
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;

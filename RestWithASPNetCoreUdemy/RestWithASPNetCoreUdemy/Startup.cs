@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using RestWithASPNetCoreUdemy.Model.Context;
 using RestWithASPNetCoreUdemy.Business;
 using RestWithASPNetCoreUdemy.Repository;
+using RestWithASPNetCoreUdemy.Repository.Generic;
 
 namespace RestWithASPNetCoreUdemy
 {
@@ -69,7 +70,10 @@ namespace RestWithASPNetCoreUdemy
 
             //dependency injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
+            services.AddScoped<IBookBusiness, BookBusinessImpl>();
             services.AddScoped<IPersonRepository, PersonRepositoryImpl>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

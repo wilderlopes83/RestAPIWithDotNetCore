@@ -9,18 +9,18 @@ using RestWithASPNetCoreUdemy.Repository.Generic;
 
 namespace RestWithASPNetCoreUdemy.Business
 {
-    public class PersonBusinessImpl : IPersonBusiness
+    public class BookBusinessImpl : IBookBusiness
     {
-        private IRepository<Person> _repository;
+        private IRepository<Book> _repository;
 
-        public PersonBusinessImpl(IRepository<Person> repository)
+        public BookBusinessImpl(IRepository<Book> repository)
         {
             _repository = repository;
         }
 
-        public Person Create(Person person)
+        public Book Create(Book book)
         {
-            return _repository.Create(person);
+            return _repository.Create(book);
         }
 
         public void Delete(long id)
@@ -28,19 +28,19 @@ namespace RestWithASPNetCoreUdemy.Business
             _repository.Delete(id);
         }
 
-        public List<Person> FindAll()
+        public List<Book> FindAll()
         {
             return _repository.FindAll();
         }
 
-        public Person FindById(long id)
+        public Book FindById(long id)
         {
             return _repository.FindById(id);
         }
 
-        public Person Update(Person person)
+        public Book Update(Book book)
         {
-            return _repository.Update(person);
+            return _repository.Update(book);
         }
     }
 }
