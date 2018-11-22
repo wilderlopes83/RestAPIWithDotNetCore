@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using RestWithASPNetCoreUdemy.Model;
-using RestWithASPNetCoreUdemy.Model.Context;
-using System.Linq;
-using RestWithASPNetCoreUdemy.Repository;
+﻿using System.Collections.Generic;
 using RestWithASPNetCoreUdemy.Repository.Generic;
+using RestWithASPNetCoreUdemy.Data.VO;
+using RestWithASPNetCoreUdemy.Data.Converters;
+using RestWithASPNetCoreUdemy.Model;
 
 namespace RestWithASPNetCoreUdemy.Business
 {
@@ -13,14 +10,22 @@ namespace RestWithASPNetCoreUdemy.Business
     {
         private IRepository<Person> _repository;
 
+        private readonly PersonConverter _converter;
+
         public PersonBusinessImpl(IRepository<Person> repository)
         {
             _repository = repository;
+            _converter = new PersonConverter();
         }
 
-        public Person Create(Person person)
+        public PersonVO Create(PersonVO person)
         {
-            return _repository.Create(person);
+            //recebe o VO e converte para a entidade a ser persistida
+            var personEntity = _converter.Parse(person);
+            //recebe a entidade persistida
+            personEntity = _repository.Create(personEntity);
+            //converte de volta para VO
+            return _converter.Parse(personEntity);
         }
 
         public void Delete(long id)
@@ -28,19 +33,24 @@ namespace RestWithASPNetCoreUdemy.Business
             _repository.Delete(id);
         }
 
-        public List<Person> FindAll()
+        public List<PersonVO> FindAll()
         {
-            return _repository.FindAll();
+            return _converter.ParseList(_repository.FindAll());
         }
 
-        public Person FindById(long id)
+        public PersonVO FindById(long id)
         {
-            return _repository.FindById(id);
+            return _converter.Parse(_repository.FindById(id));
         }
 
-        public Person Update(Person person)
+        public PersonVO Update(PersonVO person)
         {
-            return _repository.Update(person);
+            //recebe o VO e converte para a entidade a ser persistida
+            var personEntity = _converter.Parse(person);
+            //recebe a entidade persistida
+            personEntity = _repository.Update(personEntity);
+            //converte de volta para VO
+            return _converter.Parse(personEntity);
         }
     }
 }

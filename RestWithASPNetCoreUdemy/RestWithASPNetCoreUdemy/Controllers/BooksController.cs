@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Business;
+using RestWithASPNetCoreUdemy.Data.VO;
 
 namespace RestWithASPNetCoreUdemy.Controllers
 {   
@@ -36,7 +37,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
               
         [HttpPost]
-        public IActionResult Post([FromBody] Book book)
+        public IActionResult Post([FromBody] BookVO book)
         {            
             if (book == null)
             {
@@ -49,7 +50,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Book book)
+        public IActionResult Put([FromBody] BookVO book)
         {
             
             if (book == null)

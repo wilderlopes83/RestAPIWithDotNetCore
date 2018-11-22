@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using RestWithASPNetCoreUdemy.Model;
-using RestWithASPNetCoreUdemy.Model.Context;
-using System.Linq;
-using RestWithASPNetCoreUdemy.Repository;
+﻿using System.Collections.Generic;
 using RestWithASPNetCoreUdemy.Repository.Generic;
+using RestWithASPNetCoreUdemy.Data.Converters;
+using RestWithASPNetCoreUdemy.Data.VO;
+using RestWithASPNetCoreUdemy.Model;
 
 namespace RestWithASPNetCoreUdemy.Business
 {
@@ -13,14 +10,22 @@ namespace RestWithASPNetCoreUdemy.Business
     {
         private IRepository<Book> _repository;
 
+        private readonly BookConverter _converter;
+
         public BookBusinessImpl(IRepository<Book> repository)
         {
             _repository = repository;
+            _converter = new BookConverter();
         }
 
-        public Book Create(Book book)
+        public BookVO Create(BookVO book)
         {
-            return _repository.Create(book);
+            //recebe o VO e converte para a entidade a ser persistida
+            var bookEntity = _converter.Parse(book);
+            //recebe a entidade persistida
+            bookEntity = _repository.Create(bookEntity);
+            //converte de volta para VO
+            return _converter.Parse(bookEntity);            
         }
 
         public void Delete(long id)
@@ -28,19 +33,24 @@ namespace RestWithASPNetCoreUdemy.Business
             _repository.Delete(id);
         }
 
-        public List<Book> FindAll()
+        public List<BookVO> FindAll()
         {
-            return _repository.FindAll();
+            return _converter.ParseList(_repository.FindAll());
         }
 
-        public Book FindById(long id)
+        public BookVO FindById(long id)
         {
-            return _repository.FindById(id);
+            return _converter.Parse(_repository.FindById(id));
         }
 
-        public Book Update(Book book)
+        public BookVO Update(BookVO book)
         {
-            return _repository.Update(book);
+            //recebe o VO e converte para a entidade a ser persistida
+            var bookEntity = _converter.Parse(book);
+            //recebe a entidade persistida
+            bookEntity = _repository.Update(bookEntity);
+            //converte de volta para VO
+            return _converter.Parse(bookEntity);            
         }
     }
 }
