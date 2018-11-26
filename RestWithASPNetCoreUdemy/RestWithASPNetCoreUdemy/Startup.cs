@@ -15,6 +15,7 @@ using RestWithASPNetCoreUdemy.Model.Context;
 using RestWithASPNetCoreUdemy.Business;
 using RestWithASPNetCoreUdemy.Repository;
 using RestWithASPNetCoreUdemy.Repository.Generic;
+using Microsoft.Net.Http.Headers;
 
 namespace RestWithASPNetCoreUdemy
 {
@@ -62,7 +63,18 @@ namespace RestWithASPNetCoreUdemy
                 }
             }
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //adicionando retorno XML para a API
+            //comentei as linhas relacionadas a XML para garantir o retorno padrão 
+            //da API para JSON.
+            var s = services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+                //--linha comentada retorno XML -->options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
+                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+            });
+            
+            s.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //--linha comentada retorno XML --> s.AddXmlSerializerFormatters();
 
             //para habilitar o versionamento, foi necessário adicionar via nuget:
             //dotnet add package Microsoft.AspNetCore.Mvc.Versioning
