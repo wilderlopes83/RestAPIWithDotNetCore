@@ -16,6 +16,8 @@ using RestWithASPNetCoreUdemy.Business;
 using RestWithASPNetCoreUdemy.Repository;
 using RestWithASPNetCoreUdemy.Repository.Generic;
 using Microsoft.Net.Http.Headers;
+using Tapioca.HATEOAS;
+using RestWithASPNetCoreUdemy.Hypermedia;
 
 namespace RestWithASPNetCoreUdemy
 {
@@ -76,6 +78,12 @@ namespace RestWithASPNetCoreUdemy
             s.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             //--linha comentada retorno XML --> s.AddXmlSerializerFormatters();
 
+
+            //HATEOAS
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ObjectContentResponseEnricherList.Add( new PersonEnricher());
+            services.AddSingleton(filterOptions);
+
             //para habilitar o versionamento, foi necessário adicionar via nuget:
             //dotnet add package Microsoft.AspNetCore.Mvc.Versioning
             services.AddApiVersioning();
@@ -101,7 +109,12 @@ namespace RestWithASPNetCoreUdemy
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(routes => {
+                routes.MapRoute(
+                    name: "Defaultapi",
+                    template: "{controller=Values}/{id}"
+                );
+            });
         }
     }
 }

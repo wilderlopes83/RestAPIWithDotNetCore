@@ -1,9 +1,9 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/home/wilder/.dotnet/store/|arch|/|tfm|",
-      "/home/wilder/.nuget/packages",
-      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+      "C:\\Users\\Wilder\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Wilder\\.nuget\\packages",
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ]
   }
 }

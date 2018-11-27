@@ -2,6 +2,7 @@
 using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Business;
 using RestWithASPNetCoreUdemy.Data.VO;
+using Tapioca.HATEOAS;
 
 namespace RestWithASPNetCoreUdemy.Controllers
 {   
@@ -19,6 +20,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
 
 
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_personBusiness.FindAll());
