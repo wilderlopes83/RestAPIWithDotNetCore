@@ -18,6 +18,8 @@ using RestWithASPNetCoreUdemy.Repository.Generic;
 using Microsoft.Net.Http.Headers;
 using Tapioca.HATEOAS;
 using RestWithASPNetCoreUdemy.Hypermedia;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace RestWithASPNetCoreUdemy
 {
@@ -88,6 +90,15 @@ namespace RestWithASPNetCoreUdemy
             //dotnet add package Microsoft.AspNetCore.Mvc.Versioning
             services.AddApiVersioning();
 
+            //adicionando swagger
+            services.AddSwaggerGen(c =>{
+                c.SwaggerDoc("v1", new Info
+                                   {
+                                        Title="RESTful API With ASP.NET Core 2.0",
+                                        Version = "v1"
+                                    });
+            });
+
             //dependency injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
             services.AddScoped<IBookBusiness, BookBusinessImpl>();
@@ -109,6 +120,17 @@ namespace RestWithASPNetCoreUdemy
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "Defaultapi",

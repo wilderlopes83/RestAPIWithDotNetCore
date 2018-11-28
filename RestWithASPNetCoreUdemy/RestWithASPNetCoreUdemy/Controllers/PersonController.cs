@@ -3,6 +3,7 @@ using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Business;
 using RestWithASPNetCoreUdemy.Data.VO;
 using Tapioca.HATEOAS;
+using System.Collections.Generic;
 
 namespace RestWithASPNetCoreUdemy.Controllers
 {   
@@ -20,6 +21,13 @@ namespace RestWithASPNetCoreUdemy.Controllers
 
 
         [HttpGet]
+        //comando conforme o curso no Udemy, mas API foi atualizada e comando modificado para ProducesResponseType...
+        //[SwaggerResponse((200), Type = typeof(List<PersonVO>))]
+        //////
+        [ProducesResponseType(typeof(List<PersonVO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]        
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
@@ -28,6 +36,10 @@ namespace RestWithASPNetCoreUdemy.Controllers
 
         // GET api/Person/1
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(PersonVO), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Get(int Id)
         {
             var person = _personBusiness.FindById(Id);
@@ -42,6 +54,9 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(PersonVO), 201)]                
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]        
         public IActionResult Post([FromBody] PersonVO person)
         {            
             if (person == null)
@@ -55,6 +70,9 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(typeof(PersonVO), 202)]                
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]        
         public IActionResult Put([FromBody] PersonVO person)
         {
             
@@ -74,6 +92,9 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]                
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Delete(int id)
         {
             _personBusiness.Delete(id);
