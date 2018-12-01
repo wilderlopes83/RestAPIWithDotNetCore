@@ -57,6 +57,7 @@ namespace RestWithASPNetCoreUdemy
                         IsEraseDisabled = true,
                     };
 
+                    evolve.Repair();
                     evolve.Migrate();
                     
                 }
@@ -102,7 +103,7 @@ namespace RestWithASPNetCoreUdemy
             //dependency injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
             services.AddScoped<IBookBusiness, BookBusinessImpl>();
-            services.AddScoped<IPersonRepository, PersonRepositoryImpl>();
+            services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
