@@ -20,6 +20,9 @@ using Tapioca.HATEOAS;
 using RestWithASPNetCoreUdemy.Hypermedia;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Rewrite;
+using RestWithASPNetCoreUdemy.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNetCoreUdemy
 {
@@ -46,13 +49,14 @@ namespace RestWithASPNetCoreUdemy
             //configuração do Migration, se ambiente desenvolvimento, para iniciar a base de dados
             ExecuteMigrations(connectionString);
 
+            ///////////////////////////////////////
             //configurações de autenticação
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
 
-            var tokenConfigurations = new TokenConfigurations();
+            var tokenConfigurations = new TokenConfiguration();
 
-            new ConfigureFromConfigurationOptions<TokenConfigurations>(
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
                 _configuration.GetSection("TokenConfigurations")
             )
             .Configure(tokenConfigurations);
@@ -61,12 +65,39 @@ namespace RestWithASPNetCoreUdemy
 
             services.AddAuthentication(authOptions =>
             {
-                authOptions.DefaultAuthenticationScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(bearerOptions =>
             {
                 var paramsValidation = bearerOptions.TokenValidationParameters;
-            })
+                paramsValidation.IssuerSigningKey = signingConfigurations.Key;
+                paramsValidation.ValidAudience = tokenConfigurations.Audience;
+                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
+
+                //validate the signing of a received token
+                paramsValidation.ValidateIssuerSigningKey = true;
+
+                //check if a received token is still valid
+                paramsValidation.ValidateLifetime = true;
+
+                //tolerance time for the expiration of a token (used in case)
+                //of time syncronization problems between differente
+                //computer involved in the communication process)
+                paramsValidation.ClockSkew = TimeSpan.Zero;               
+            });
+
+            //Enables the use of the token as a menas of
+            //authorizing access to this project's resources
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build()
+                );
+            });
+            ///////////////////////////////////
+            ////fim autenticação/segurança//////////////
+            ////////////////////////////////
 
             //adicionando retorno XML para a API
             //comentei as linhas relacionadas a XML para garantir o retorno padrão 
@@ -103,6 +134,7 @@ namespace RestWithASPNetCoreUdemy
             //dependency injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
             services.AddScoped<IBookBusiness, BookBusinessImpl>();
+            services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));

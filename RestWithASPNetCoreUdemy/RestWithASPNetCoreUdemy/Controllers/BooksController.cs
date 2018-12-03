@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Business;
 using RestWithASPNetCoreUdemy.Data.VO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNetCoreUdemy.Controllers
 {   
@@ -17,13 +18,15 @@ namespace RestWithASPNetCoreUdemy.Controllers
             this._bookBusiness = bookBusiness;
         }
 
-        [HttpGet("v1")]
+        [HttpGet]
+        [Authorize("Bearer")]    
         public IActionResult Get()
         {
             return Ok(_bookBusiness.FindAll());            
         }
 
-        [HttpGet("v1/{id}")]
+        [HttpGet("{id}")]
+        [Authorize("Bearer")]    
         public IActionResult Get(long id)
         {
 
@@ -37,6 +40,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
               
         [HttpPost]
+        [Authorize("Bearer")]    
         public IActionResult Post([FromBody] BookVO book)
         {            
             if (book == null)
@@ -50,6 +54,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
 
         [HttpPut]
+        [Authorize("Bearer")]    
         public IActionResult Put([FromBody] BookVO book)
         {
             
@@ -69,6 +74,7 @@ namespace RestWithASPNetCoreUdemy.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("Bearer")]    
         public IActionResult Delete(int id)
         {
             _bookBusiness.Delete(id);
