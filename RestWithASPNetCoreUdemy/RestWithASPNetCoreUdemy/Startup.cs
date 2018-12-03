@@ -44,29 +44,29 @@ namespace RestWithASPNetCoreUdemy
             services.AddDbContext<MySQLContext>(options => options.UseMySql(connectionString));
 
             //configuração do Migration, se ambiente desenvolvimento, para iniciar a base de dados
-            if (_environment.IsDevelopment())
+            ExecuteMigrations(connectionString);
+
+            //configurações de autenticação
+            var signingConfigurations = new SigningConfigurations();
+            services.AddSingleton(signingConfigurations);
+
+            var tokenConfigurations = new TokenConfigurations();
+
+            new ConfigureFromConfigurationOptions<TokenConfigurations>(
+                _configuration.GetSection("TokenConfigurations")
+            )
+            .Configure(tokenConfigurations);
+
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(authOptions =>
             {
-                try
-                {
-                    var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(connectionString);
-
-                    var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
-                    {
-                        Locations = new List<string> {"db/migrations"},
-                        //não apaga conteúdo, caso já existe alguma informação no BD
-                        IsEraseDisabled = true,
-                    };
-
-                    evolve.Repair();
-                    evolve.Migrate();
-                    
-                }
-                catch(Exception ex)
-                {
-                    _logger.LogCritical("Database migration faield.", ex);
-                    throw;
-                }
-            }
+                authOptions.DefaultAuthenticationScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(bearerOptions =>
+            {
+                var paramsValidation = bearerOptions.TokenValidationParameters;
+            })
 
             //adicionando retorno XML para a API
             //comentei as linhas relacionadas a XML para garantir o retorno padrão 
@@ -106,6 +106,33 @@ namespace RestWithASPNetCoreUdemy
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+        }
+
+        private void ExecuteMigrations(string connectionString)
+        {
+            if (_environment.IsDevelopment())
+            {
+                try
+                {
+                    var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(connectionString);
+
+                    var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
+                    {
+                        Locations = new List<string> {"db/migrations"},
+                        //não apaga conteúdo, caso já existe alguma informação no BD
+                        IsEraseDisabled = true,
+                    };
+
+                    evolve.Repair();
+                    evolve.Migrate();
+                    
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogCritical("Database migration faield.", ex);
+                    throw;
+                }
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
