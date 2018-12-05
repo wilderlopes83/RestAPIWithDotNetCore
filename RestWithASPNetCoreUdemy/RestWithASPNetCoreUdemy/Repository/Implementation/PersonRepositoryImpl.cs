@@ -4,23 +4,33 @@ using System.Threading;
 using RestWithASPNetCoreUdemy.Model;
 using RestWithASPNetCoreUdemy.Model.Context;
 using System.Linq;
+using RestWithASPNetCoreUdemy.Repository.Generic;
 
 namespace RestWithASPNetCoreUdemy.Repository
 {
-    public class UserRepositoryImpl : IUserRepository
+    public class PersonRepositoryImpl : GenericRepository<Person>, IPersonRepository
     {
-        private MySQLContext _context;
 
-        public UserRepositoryImpl(MySQLContext context)
+        public PersonRepositoryImpl(MySQLContext context): base(context){}
+
+        public List<Person> FindByName(string firstName, string lastName)
         {
-            _context = context;
+            if(!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName))
+            {
+                return _context.Persons.Where(p => p.FirstName.Equals(firstName) && p.LastName.Equals(lastName)).ToList();
+            }
+            else if(!string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName)) 
+            {
+                return _context.Persons.Where(p => p.FirstName.Equals(firstName)).ToList();
+            }
+            else if(string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName)) 
+            {
+                return _context.Persons.Where(p => p.LastName.Equals(lastName)).ToList();
+            }            
+            else
+            {
+                return _context.Persons.ToList();
+            }
         }
-
-        public User FindByLogin(string login)
-        {
-            //return MockPerson((int)id);
-            return _context.Users.SingleOrDefault(p => p.Login.Equals(login));
-        }
-
     }
 }

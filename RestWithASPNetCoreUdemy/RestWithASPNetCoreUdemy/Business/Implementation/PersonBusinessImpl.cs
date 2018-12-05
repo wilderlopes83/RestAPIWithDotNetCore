@@ -3,16 +3,18 @@ using RestWithASPNetCoreUdemy.Repository.Generic;
 using RestWithASPNetCoreUdemy.Data.VO;
 using RestWithASPNetCoreUdemy.Data.Converters;
 using RestWithASPNetCoreUdemy.Model;
+using RestWithASPNetCoreUdemy.Repository;
 
 namespace RestWithASPNetCoreUdemy.Business
 {
     public class PersonBusinessImpl : IPersonBusiness
     {
-        private IRepository<Person> _repository;
+        //private IRepository<Person> _repository;
+        private IPersonRepository _repository;
 
         private readonly PersonConverter _converter;
 
-        public PersonBusinessImpl(IRepository<Person> repository)
+        public PersonBusinessImpl(IPersonRepository repository)
         {
             _repository = repository;
             _converter = new PersonConverter();
@@ -37,6 +39,11 @@ namespace RestWithASPNetCoreUdemy.Business
         {
             return _converter.ParseList(_repository.FindAll());
         }
+
+        public List<PersonVO> FindByName(string firstName, string lastName)
+        {
+            return _converter.ParseList(_repository.FindByName(firstName, lastName));
+        }        
 
         public PersonVO FindById(long id)
         {

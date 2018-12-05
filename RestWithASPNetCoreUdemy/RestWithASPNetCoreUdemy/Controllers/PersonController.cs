@@ -33,7 +33,22 @@ namespace RestWithASPNetCoreUdemy.Controllers
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
-            return Ok(_personBusiness.FindAll());
+            return new OkObjectResult(_personBusiness.FindAll());
+        }
+
+        [HttpGet("find-by-name")]
+        //comando conforme o curso no Udemy, mas API foi atualizada e comando modificado para ProducesResponseType...
+        //[SwaggerResponse((200), Type = typeof(List<PersonVO>))]
+        //////
+        [ProducesResponseType(typeof(List<PersonVO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]    
+        [Authorize("Bearer")]    
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetByName([FromQuery] string firstName, string lastName)
+        {
+            return new OkObjectResult(_personBusiness.FindByName(firstName, lastName));
         }
 
         // GET api/Person/1
