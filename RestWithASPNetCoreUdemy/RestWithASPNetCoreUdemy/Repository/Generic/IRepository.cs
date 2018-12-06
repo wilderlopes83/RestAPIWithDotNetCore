@@ -16,5 +16,8 @@ namespace RestWithASPNetCoreUdemy.Repository.Generic
         void Delete(long id);
 
         bool Exist(long? id);
+
+        List<T> FindyWithPagedSearch(string query);
+        int GetCount(string query);
     }
 }

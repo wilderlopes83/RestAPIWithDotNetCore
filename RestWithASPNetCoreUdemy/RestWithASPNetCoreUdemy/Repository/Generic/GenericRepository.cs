@@ -85,5 +85,15 @@ namespace RestWithASPNetCoreUdemy.Repository.Generic
 
             return item;
         }
+
+        public List<T> FindyWithPagedSearch(string query)
+        {
+            return this.dataset.FromSql(query).ToList();
+        }
+
+        public int GetCount(string query)
+        {
+            return this.dataset.FromSql(query).Count();
+        }
     }
 }
