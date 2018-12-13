@@ -41,5 +41,6 @@ namespace RestWithASPNetCoreUdemy.Controllers
 
            return new ContentResult();
         }       
+        
     }
 }

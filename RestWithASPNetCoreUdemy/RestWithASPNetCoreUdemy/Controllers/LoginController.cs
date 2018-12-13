@@ -4,6 +4,7 @@ using RestWithASPNetCoreUdemy.Business;
 using Tapioca.HATEOAS;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace RestWithASPNetCoreUdemy.Controllers
 {   
@@ -25,8 +26,15 @@ namespace RestWithASPNetCoreUdemy.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]User user)
         {
-            if (user==null) return BadRequest();
-            return new ObjectResult(_loginBusiness.FindByLogin(user));
+            try
+            {
+                if (user==null) return BadRequest();
+                return new ObjectResult(_loginBusiness.FindByLogin(user));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }       
     }
 }
